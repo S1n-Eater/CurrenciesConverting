@@ -248,3 +248,23 @@ export const translations = {
   82226: "Фикс",
   110639: "Статья",
 };
+
+export const decoded = (encodedList, translationsList) => {
+  const list = new Set();
+
+  encodedList.forEach((element) => {
+    for (const key in element) {
+      if (key !== "groupId" && /Id/.test(key)) {
+        if (
+          translationsList[element[key]] ||
+          translationsList[element[key]] === ""
+        ) {
+          element[key] = translationsList[element[key]];
+        } else if (element[key] !== null) {
+          list.add(element[key]);
+        }
+      }
+    }
+  });
+  return { encodedList, uniqId: Array.from(list) };
+};
